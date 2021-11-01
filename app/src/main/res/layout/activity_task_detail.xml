@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskDetail">
+
+    <TextView
+        android:id="@+id/text_detail"
+        android:layout_width="143dp"
+        android:layout_height="42dp"
+        android:text="@string/task_details"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="334dp"
+        android:layout_height="377dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:src="@drawable/android_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_detail" />
+
+
+    <TextView
+        android:id="@+id/text_detailDescription"
+        android:layout_width="225dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical"
+        android:text="@string/lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_cras_quis_volutpat_nibh_duis_nec_porttitor_neque_integer_ut_tincidunt_turpis_fusce_sit_amet_justo_ac_leo_porta_porttitor_integer_a_iaculis_ligula_eu_vulputate_neque_phasellus_faucibus_dolor_at_aliquam_luctus_risus_lectus_laoreet_mi_vel_eleifend_metus_odio_non_dui_mauris_ipsum_justo_convallis_sit_amet_cursus_quis_porta_et_massa_curabitur_sodales_felis_vitae_orci_sagittis_ac_varius_mauris_accumsan"
+        app:layout_constraintBottom_toBottomOf="@id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_detail" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

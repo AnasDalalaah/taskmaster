@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,40 +20,93 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.071" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="334dp"
         android:layout_height="377dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/android_image_view"
         android:orientation="vertical"
+         android:src="@drawable/android_image_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_myTasks" />
+    <TextView
+        android:id="@+id/textMain_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+    <Button
+        android:id="@+id/button_firstTask"
+        android:layout_width="225dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="92dp"
+        android:background="@color/purple_500"
+        android:text="@string/go_to_shopping"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_myTasks" />
+
+    <Button
+        android:id="@+id/button_secondTask"
+        android:layout_width="225dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/purple_500"
+        android:text="@string/studying"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_firstTask" />
+
+    <Button
+        android:id="@+id/button_thirdTask"
+        android:layout_width="225dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/purple_500"
+        android:text="@string/prepare_food"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_secondTask" />
 
     <Button
         android:id="@+id/buttonMain_addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:background="#90caf9"
+        android:background="@color/purple_500"
         android:text="@string/add_task_button"
         app:layout_constraintEnd_toStartOf="@+id/buttonMain_allTask"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
     <Button
         android:id="@+id/buttonMain_allTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:background="#90caf9"
+        android:background="@color/purple_500"
         android:text="@string/all_tasks_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonMain_addTask"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-</android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+    <ImageButton
+        android:id="@+id/buttonMain_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
+</androidx.constraintlayout.widget.ConstraintLayout> 
