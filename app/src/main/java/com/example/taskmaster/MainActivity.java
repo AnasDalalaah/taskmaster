@@ -18,7 +18,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.taskmaster.adapter.DB.AppDatabase;
+import com.example.taskmaster.adapter.DB.TaskDao;
 import com.example.taskmaster.adapter.TaskAdapter;
 import com.example.taskmaster.model.State;
 import com.example.taskmaster.model.Task;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Task> tasks;
     private TaskAdapter adapter;
 
+    AppDatabase database;
+    private TaskDao taskDao;
+
     @Override
      public void onResume() { 
         super.onResume();
@@ -49,18 +55,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
+                .allowMainThreadQueries()
+                .build();
+        taskDao = database.taskDao();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
-        tasks = new ArrayList<>();
+      /*  tasks = new ArrayList<>();
         tasks.add(new Task("First", "First body"));
         tasks.add(new Task("Second", "Second body"));
         tasks.add(new Task("Third", "Third body"));
-        tasks.add(new Task("Done", "Trash body"));
+        tasks.add(new Task("Done", "Trash body"));*/
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor preferenceEditor = preferences.edit();
+
+        adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
+
          @Override
             public void onItemClicked(int position) {
                 if (position == 0)
@@ -126,13 +140,13 @@ public class MainActivity extends AppCompatActivity {
        
     }
 
-    @Override
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
