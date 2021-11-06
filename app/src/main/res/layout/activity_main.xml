@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-    <Button
+    <!--Button
         android:id="@+id/button_firstTask"
         android:layout_width="225dp"
         android:layout_height="50dp"
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.451"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_secondTask" />
+        app:layout_constraintTop_toBottomOf="@+id/button_secondTask" />-->
 
     <Button
         android:id="@+id/buttonMain_addTask"
@@ -109,4 +109,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
+    
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_task"
+        android:layout_width="324dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMain_username"
+
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout> 
