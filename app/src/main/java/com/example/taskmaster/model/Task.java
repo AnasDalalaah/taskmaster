@@ -35,4 +35,12 @@ public class Task {
     public void setState(State state) {
         this.state = state;
     }
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
