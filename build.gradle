@@ -23,3 +23,7 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//lab32
+// Add this line at the end of the file
+apply plugin: 'com.amplifyframework.amplifytools'
