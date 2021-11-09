@@ -71,6 +71,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 
 
+    //lab32
+    implementation 'com.amplifyframework:aws-api:1.24.0'
+    implementation 'com.amplifyframework:aws-datastore:1.24.0'
+
 
 
 }
