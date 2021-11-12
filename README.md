@@ -23,17 +23,17 @@ So, tasks will be Updated to be owned by a team.
 
 - *Settings page for adding a username and selecting a team name.*
   
-![Settings Page](../screenshots/lab33/settings.png)
+![Settings Page](screenshots/lab33/settings.png)
 
   
 - *We can add a task.*
   
-![Add Task](../screenshots/lab33/add_a_task.png)
+![Add Task](screenshots/lab33/add_a_task.jpg)
 
   
 - *Home page after adding a task*
   
-![Home Page](../screenshots/lab33/home_page.png)
+![Home Page](screenshots/lab33/home_page.png)
 
 
 
