@@ -3,6 +3,7 @@ package com.example.taskmaster;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -25,16 +26,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amplifyframework.AmplifyException;
-import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,23 +44,36 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_STATE = "task_state";
 
     private static final String TAG = "MainActivity";
+
     private List<Task> tasks;
     private TaskAdapter adapter;
     private Handler handler;
-
+    private List<Team> teams;
+    private String selectedTeam;
+    private SharedPreferences preferences;
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
 
+    @SuppressLint("SetTextI18n")
 
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
 
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView address = findViewById(R.id.textMain_username);
-        address.setText(preferences.getString("username", "Go to Settings to set your username"));
-        queryDataStore();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView teamName = findViewById(R.id.textMain_teamName);
+        TextView loggedInUser = findViewById(R.id.textMain_logInUser);
+        selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
+        teamName.setText(selectedTeam);
+
+         if (isNetworkAvailable(getApplicationContext())) {
+            queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
     }
 
 
@@ -68,8 +82,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedTeam = preferences.getString("selectedTeam", " ")
+
+
         /*Lab32*/
-        try {
+        /*try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
@@ -79,15 +97,29 @@ public class MainActivity extends AppCompatActivity {
         } catch (AmplifyException e) {
             Log.e("Task", "Could not initialize Amplify", e);
         }
-
+*/
         setContentView(R.layout.activity_main);
+
+
+
         tasks = new ArrayList<>();
-        tasks = queryDataStore();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
+        
+         handler = new Handler(Looper.getMainLooper(),
+                msg -> {
+                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
+                    return false;
+                });
+        if (isNetworkAvailable(getApplicationContext())) {
+            tasks = queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor preferenceEditor = preferences.edit();
+         SharedPreferences.Editor preferenceEditor = preferences.edit();
         adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
 
             @Override
@@ -116,30 +148,33 @@ public class MainActivity extends AppCompatActivity {
                 listItemDeleted();
             }
         });
+        
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
                 this,
                 LinearLayoutManager.VERTICAL,
                 false);
         taskRecyclerView.setLayoutManager(linearLayoutManager);
         taskRecyclerView.setAdapter(adapter);
 
+
+        /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AllTasks.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(newIntent);
         });
 
         ImageButton navToSettingsButton = MainActivity.this.findViewById(R.id.buttonMain_settings);
         navToSettingsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, Settings.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, Settings.class);
+            startActivity(newIntent);
         });
 
 
@@ -169,7 +204,29 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+           Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
             return true;
+        }
+        
+        if (id == R.id.action_task) {
+            Intent intent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        if (id == R.id.action_logout) {
+            Amplify.Auth.signOut(
+                    AuthSignOutOptions.builder().globalSignOut(true).build(),
+                    () -> {
+                        Log.i("AuthQuickstart", "Signed out globally");
+                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                    },
+                    error -> Log.e("AuthQuickstart", error.toString())
+            );
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -181,6 +238,8 @@ public class MainActivity extends AppCompatActivity {
      * @param body
      * @param state
      */
+
+
     public static void saveTasksToDataStore(String title, String body, State state) {
         Task item = Task.builder().title(title).body(body).state(state).build();
 
@@ -192,26 +251,67 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * queryDataStore()
-     *
-     * @return List of amplifyTasks
-     */
-    public synchronized static List<Task> queryDataStore() {
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
+                .getActiveNetworkInfo().isConnected();
+    }
+
+    public synchronized List<Task> queryAPITasks() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                response -> {
+                    tasks.clear();
+                    for (Task task : response.getData()) {
+                        if (preferences.contains("selectedTeam")) {
+                            if (task.getTeam().getName().equals(selectedTeam)) {
+                                tasks.add(task);
+                            }
+                        } else {
+                            tasks.add(task);
+                        }
+                    }
+                    handler.sendEmptyMessage(1);
+                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
+                },
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
+        );
+        return tasks;
+    }
+
+
+    public synchronized List<Task> queryDataStore() {
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         List<Task> tasks = new ArrayList<>();
         Amplify.DataStore.query(Task.class,
                 amplifyTasks -> {
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
-                        tasks.add(oneTask);
+
+                        
+                         if (preferences.contains("selectedTeam")) {
+                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
+                                tasks.add(oneTask);
+                            }
+                        } else {
+                            tasks.add(oneTask);
+                        }
+                        System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());
 
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());
                         if (oneTask.getBody() != null) {
-                            Log.i("Task", "Body: " + oneTask.getBody().toString());
+                            Log.i("Task", "Body: " + oneTask.getBody());
                         }
                         if (oneTask.getState() != null) {
                             Log.i("Task", "State: " + oneTask.getState().toString());
+                        }
+                        if (oneTask.getTeam().getName() != null) {
+                            Log.i("Task", "State: " + oneTask.getTeam().getName().toString());
                         }
                         Log.i("Tutorial", "==== Task End ====");
                     }
@@ -220,5 +320,34 @@ public class MainActivity extends AppCompatActivity {
 
         return tasks;
     }
+         //lab33
+    public void buildTeams() {
+        Team team1 = Team.builder()
+                .name("team1")
+                .build();
 
+        Team team2 = Team.builder()
+                .name("team2")
+                .build();
+
+        Team team3 = Team.builder()
+                .name("team3")
+                .build();
+
+        Amplify.API.mutate(ModelMutation.create(team1),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
+        Amplify.API.mutate(ModelMutation.create(team2),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
+        Amplify.API.mutate(ModelMutation.create(team3),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
+    }
 }

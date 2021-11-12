@@ -6,7 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 
-import com.example.taskmaster.model.ApplicationTask;
+import com.amplifyframework.datastore.generated.model.Task;
+
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ import java.util.List;
 public interface TaskDao {
 
     @Insert
-    void insertOne(ApplicationTask task);
-
+    void insertOne(Task task);
+/*
     @Query("SELECT * FROM ApplicationTask WHERE task_title LIKE :title")
     ApplicationTask findByTitle(String title);
 
@@ -34,5 +35,5 @@ public interface TaskDao {
 
     @Query("DELETE FROM ApplicationTask")
     void delteteSafe();
-
+*/
 }
