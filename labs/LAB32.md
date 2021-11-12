@@ -13,7 +13,7 @@ Refactor homepage’s RecyclerView to display all Task entities in DynamoDB.
 
 ## Screen Shots
 - *We can add a task.*
-![Add Task](screenshots/lab32/add_a_task.jpg)
+![add_a_task](add_a_task.jpg)
 
 
 - *Home page after adding that task*
