@@ -11,3 +11,10 @@ type Task @model {
   body: String
   State: State
 }
+type Task @model {
+  id: ID!
+  title: String!
+  body: String
+  State: State
+  team: Team @connection(name: "teamTasks")
+}

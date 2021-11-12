@@ -57,8 +57,6 @@ tools:context=".AddATask">
         app:layout_constraintTop_toBottomOf="@+id/edit_myTask" />
 
 
-
-
     <EditText
         android:id="@+id/edit_doSomething"
         android:layout_width="wrap_content"
@@ -77,7 +75,6 @@ tools:context=".AddATask">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="420dp"
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="16dp"
         android:background="@android:drawable/btn_dropdown"
@@ -86,31 +83,65 @@ tools:context=".AddATask">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />    
+        app:layout_constraintTop_toBottomOf="@+id/edit_doSomething"
+        app:layout_constraintVertical_bias="0.035" />
+    
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="309dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner">
+
+        <RadioButton
+            android:id="@+id/radioButton_team1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team1"
+            />
+
+        <RadioButton
+            android:id="@+id/radioButton_team2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team2"
+
+            />
+
+        <RadioButton
+            android:id="@+id/radioButton_team3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team3"
+
+            />
+    </RadioGroup>
 
     <Button
-        android:id="@+id/button_addTask"
+       android:id="@+id/button_addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
         android:background="@color/purple_500"
         android:text="@string/add_task_button"
-        android:background="#90caf9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_doSomething" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <TextView
-        android:id="@+id/text_totalTasks"
+         android:id="@+id/text_totalTasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/total_tasks"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_addTask" />
+        app:layout_constraintTop_toBottomOf="@+id/button_addTask"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

@@ -26,15 +26,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,13 +70,7 @@ public class MainActivity extends AppCompatActivity {
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
 
-         if (isNetworkAvailable(getApplicationContext())) {
-            queryAPITasks();
-            Log.i(TAG, "NET: the network is available");
-        } else {
-            tasks = queryDataStore();
-            Log.i(TAG, "NET: net down");
-        }
+        tasks = queryDataStore();
     }
 
 
@@ -86,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         selectedTeam = preferences.getString("selectedTeam", " ")
 
 
-        /*Lab32*/
-        /*try {
+        /**Lab32**/
+        try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
@@ -97,26 +94,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (AmplifyException e) {
             Log.e("Task", "Could not initialize Amplify", e);
         }
-*/
+
         setContentView(R.layout.activity_main);
-
-
 
         tasks = new ArrayList<>();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
         
-         handler = new Handler(Looper.getMainLooper(),
-                msg -> {
-                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
-                    return false;
-                });
-        if (isNetworkAvailable(getApplicationContext())) {
-            tasks = queryAPITasks();
-            Log.i(TAG, "NET: the network is available");
-        } else {
-            tasks = queryDataStore();
-            Log.i(TAG, "NET: net down");
+        tasks = queryDataStore();
+ 
         }
 
          SharedPreferences.Editor preferenceEditor = preferences.edit();
@@ -158,23 +144,23 @@ public class MainActivity extends AppCompatActivity {
         taskRecyclerView.setAdapter(adapter);
 
 
-        /*End of Lab28*/
+        /***End of Lab28***/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
-            Intent newIntent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(newIntent);
+            Intent Intent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(Intent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
-            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
-            startActivity(newIntent);
+            Intent Intent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(intent);
         });
 
         ImageButton navToSettingsButton = MainActivity.this.findViewById(R.id.buttonMain_settings);
         navToSettingsButton.setOnClickListener(view -> {
-            Intent newIntent = new Intent(MainActivity.this, Settings.class);
-            startActivity(newIntent);
+            Intent Intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(Intent);
         });
 
 
@@ -204,31 +190,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-           Intent intent = new Intent(MainActivity.this, Settings.class);
-            startActivity(intent);
             return true;
         }
         
-        if (id == R.id.action_task) {
-            Intent intent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(intent);
-            return true;
-        }
-
-
-        if (id == R.id.action_logout) {
-            Amplify.Auth.signOut(
-                    AuthSignOutOptions.builder().globalSignOut(true).build(),
-                    () -> {
-                        Log.i("AuthQuickstart", "Signed out globally");
-                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(intent);
-                    },
-                    error -> Log.e("AuthQuickstart", error.toString())
-            );
-
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -294,10 +258,6 @@ public class MainActivity extends AppCompatActivity {
 
                         
                          if (preferences.contains("selectedTeam")) {
-                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
-                                tasks.add(oneTask);
-                            }
-                        } else {
                             tasks.add(oneTask);
                         }
                         System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());
