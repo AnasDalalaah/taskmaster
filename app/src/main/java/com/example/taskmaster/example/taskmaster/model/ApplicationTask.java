@@ -15,11 +15,6 @@ public class ApplicationTask {
     String body;
     State state;
 
-//    public ApplicationTask(String title, String body) {
-//        this.title = title;
-//        this.body = body;
-//        this.state = State.NEW;
-//    }
     public ApplicationTask(String title, String body, State state) {
         this.title = title;
         this.body = body;
