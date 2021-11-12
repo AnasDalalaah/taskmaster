@@ -41,7 +41,8 @@ public class AddATask extends AppCompatActivity {
     private EditText editDescription;
     private static final String[] paths = {"new", "assigned", "in progress", "complete"};
     private int selectedState;
-
+    List<Team> teams;
+    RadioButton team1, team2, team3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

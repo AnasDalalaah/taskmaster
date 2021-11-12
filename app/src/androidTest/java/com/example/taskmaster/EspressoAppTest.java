@@ -12,7 +12,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static org.hamcrest.Matchers.allOf;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
@@ -69,7 +69,9 @@ public class EspressoAppTest {
         onView(withId(R.id.buttonMain_settings)).perform(click());
         onView(withId(R.id.edit_username)).perform(typeText("Anas"));
         onView(withId(R.id.saveButton)).perform(click());
-        onView(withId(R.id.textMain_username)).check(matches(withText("Anas")));
+        //onView(withId(R.id.textMain_username)).check(matches(withText("Anas")));
+        onView(withId(R.id.textMain_teamName)).check(matches(withText("Anas's Team")));
+
 
     }
     

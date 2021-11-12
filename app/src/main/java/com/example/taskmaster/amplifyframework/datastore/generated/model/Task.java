@@ -24,6 +24,7 @@ public final class Task implements Model {
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField STATE = field("Task", "State");
+  public static final QueryField TEAM = field("Task", "taskTeamId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
@@ -62,7 +63,7 @@ public final class Task implements Model {
       return updatedAt;
   }
   
-  private Task(String id, String title, String body, State State) {
+  private Task(String id, String title, String body, State State, Team team ) {
     this.id = id;
     this.title = title;
     this.body = body;
@@ -223,11 +224,11 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, State state) {
+    private CopyOfBuilder(String id, String title, String body, State state, Team team) {
       super.id(id);
       super.title(title)
-        .body(body)
-        .state(state);
+        .state(state)
+        .team(team);
     }
     
     @Override
@@ -243,6 +244,10 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder state(State state) {
       return (CopyOfBuilder) super.state(state);
+    }
+     @Override
+     public CopyOfBuilder team(Team team) {
+      return (CopyOfBuilder) super.team(team);
     }
   }
   

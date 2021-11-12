@@ -32,7 +32,35 @@
         app:layout_constraintHorizontal_bias="0.716"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_settings" />
+    
+     <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="309dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.392"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_username">
 
+        <RadioButton
+            android:id="@+id/radioButton_team1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team1" />
+
+        <RadioButton
+            android:id="@+id/radioButton_team2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team2" />
+
+        <RadioButton
+            android:id="@+id/radioButton_team3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="team3" />
+    </RadioGroup>
     <TextView
         android:id="@+id/text_username"
         android:layout_width="wrap_content"
