@@ -1,19 +1,43 @@
 {
   "api": {
-    "taskmaster": {
+    "amplifyDatasource": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 35,
-              "description": "taskmasterKey"
+              "description": "taskmasterAPI"
             }
-          },
-          "additionalAuthenticationProviders": []
+          }
         }
+      }
+    }
+  },
+  "auth": {
+    "taskmaster5b005366": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanism": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ]
       }
     }
   }

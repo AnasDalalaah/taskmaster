@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -37,6 +38,8 @@ import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 
 
@@ -69,8 +72,11 @@ public class MainActivity extends AppCompatActivity {
         TextView loggedInUser = findViewById(R.id.textMain_logInUser);
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
+        
+        String myUser = preferences.getString("loggedInUser", "");
+        loggedInUser.setText(myUser);
 
-        tasks = queryDataStore();
+        //tasks = queryDataStore();
     }
 
 
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /**Lab32**/
-        try {
+        /*try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
@@ -94,14 +100,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (AmplifyException e) {
             Log.e("Task", "Could not initialize Amplify", e);
         }
-
+*/
         setContentView(R.layout.activity_main);
 
         tasks = new ArrayList<>();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
         
-        tasks = queryDataStore();
+        //tasks = queryDataStore();
  
         }
 
@@ -145,22 +151,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         /***End of Lab28***/
+
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
-            Intent Intent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(Intent);
+           Intent newIntent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
-            Intent Intent = new Intent(MainActivity.this, AllTasks.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(newIntent);
         });
 
         ImageButton navToSettingsButton = MainActivity.this.findViewById(R.id.buttonMain_settings);
         navToSettingsButton.setOnClickListener(view -> {
-            Intent Intent = new Intent(MainActivity.this, Settings.class);
-            startActivity(Intent);
+            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(newIntent);
         });
 
 
@@ -190,9 +197,31 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
             return true;
         }
         
+        if (id == R.id.action_task) {
+            Intent intent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        if (id == R.id.action_logout) {
+            Amplify.Auth.signOut(
+                    AuthSignOutOptions.builder().globalSignOut(true).build(),
+                    () -> {
+                        Log.i("AuthQuickstart", "Signed out globally");
+                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                    },
+                    error -> Log.e("AuthQuickstart", error.toString())
+            );
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
