@@ -18,21 +18,21 @@
 
 - *Signup page*
   
-![Signup Page](signup_page.png)
+![Signup Page](screenshots/lab36/signup_page.png)
   
 - *Login page*
   
-![Login Page](login_page.png)
+![Login Page](screenshots/lab36/login_page.png)
 
   
 - *Verification page*
   
-![Verification page](verification_page.png)
+![Verification page](screenshots/lab36/verification_page.png)
 
 
 - *Displayed username*
   
-![Displayed username](displayed_username.png)
+![Displayed username](screenshots/lab36/displayed_username.png)
 
 
 ## Previous labs documentation
