@@ -176,29 +176,129 @@ public class AddATask extends AppCompatActivity {
 
     }
     
-     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
-    public void onClick(View view) {
-//        Log.i(TAG, "onClick: new way was called");
-
-        switch (view.getId()) {
-            case R.id.buttonMain_addTask:
-                editTitle.setText("Hello");
-                break;
-            case R.id.button_addTask:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("input", editTitle.getText().toString());
-                startActivity(intent);
-                break;
-        }
-    }
-
-    public boolean isNetworkAvailable(Context context) {
+     public boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager =
                 ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
                 .getActiveNetworkInfo().isConnected();
     }
 
+    public synchronized void queryAPITeams() {
+        Amplify.API.query(
+                ModelQuery.list(Team.class),
+                response -> {
+                    for (Team team : response.getData()) {
+                        teams.add(team);
+                    }
+                    System.out.println("Semasemasemasemasema" + teams.get(0).getName());
+                    Log.i("Team", "success");
+                },
+                error -> Log.e("Team", "failed to retrieve data")
+        );
+        Log.i(TAG, "NET: the network is available");
+    }
+
+    public synchronized void queryDataStore() {
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor = preferences.edit();
+        Amplify.DataStore.query(Team.class
+                ,
+                amplifyTeam -> {
+                    while (amplifyTeam.hasNext()) {
+                        Team team = amplifyTeam.next();
+                        teams.add(team);
+                        Log.i("Team", "==== Team ====");
+                        Log.i("Team", "Name: " + team.getName());
+                        if (team.getTasks() != null) {
+                            Log.i("Team", "Tasks: " + team.getTasks().toString());
+                        }
+                        Log.i("Team", "==== Team End ====");
+
+                        preferenceEditor.putString("selectedTeamName", team.getName());
+                        preferenceEditor.apply();
+                    }
+
+                }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
+        );
+
+    }
+
+    //**************Lab37**************//
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_FOR_FILE && resultCode == RESULT_OK) {
+            Log.i(TAG, "onActivityResult: returned from file explorer");
+            Log.i(TAG, "onActivityResult: => " + data.getData());
+            File uploadFile = new File(getApplicationContext().getFilesDir(), "uploadFile");
+
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                FileOutputStream outputStream = new FileOutputStream(uploadFile);
+                copyStream(inputStream, outputStream);
+
+//                When I use it, android 9 crashes
+//                FileUtils.copy(inputStream, new FileOutputStream(uploadFile));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
+            }
+            fileKey = new Date().toString() + ".png";
+            Amplify.Storage.uploadFile(
+                    fileKey,
+                    uploadFile,
+                    success -> {
+                        Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());
+                        downloadFile(success.getKey());
+
+                        SharedPreferences preferences =
+                                PreferenceManager.getDefaultSharedPreferences(this);
+                        SharedPreferences.Editor preferenceEditor = preferences.edit();
+                        preferenceEditor.putString("ImageKey", success.getKey());
+                        preferenceEditor.apply();
+
+
+                    },
+                    error -> {
+                        Log.e(TAG, "uploadFileToS3: failed " + error.toString());
+                    }
+            );
+        }
+    }
+
+
+    public void retrieveFile() {
+        Intent getPicIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getPicIntent.setType("*/*");
+        startActivityForResult(getPicIntent, REQUEST_FOR_FILE);
+    }
+
+    private void downloadFile(String fileKey) {
+        Amplify.Storage.downloadFile(
+                fileKey,
+                new File(getApplicationContext().getFilesDir() + "/" + fileKey + ".txt"),
+                result -> {
+                    Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName());
+                    ImageView image = findViewById(R.id.imageView_showFromS3);
+                    image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
+                    image.setVisibility(View.VISIBLE);
+                },
+                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
+        );
+    }
+
+
+    public static void copyStream(InputStream in, OutputStream out) throws Exception {
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+    }
+
+    //**************End Lab37**************//
 
 }
     

@@ -32,13 +32,25 @@ public class TaskDetail extends AppCompatActivity {
         taskDescription.setText(pref.getString(TASK_BODY, "No task selected"));
 
 
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivityForResult(i, 0);
-        return true;
+      //**************Lab37**************//
+        downloadFile(pref.getString("ImageKey", ""));
 
     }
 
-}
+    private void downloadFile(String key) {
+        Amplify.Storage.downloadFile(
+                key,
+                new File(getApplicationContext().getFilesDir() + "/" + key + ".txt"),
+                result -> {
+                    Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName());
+                    ImageView image = findViewById(R.id.imageView_fromS3);
+                    image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
+                    image.setVisibility(View.VISIBLE);
+                },
+                error -> Log.e("MyAmplifyApp", "Download Failure", error)
+        );
+    }
+    //**************End Lab37**************//
+
+}    
+         
