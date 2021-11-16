@@ -18,8 +18,8 @@
 
 - *Signup page*
   
-![Signup Page](screenshots/lab36/signup_page.pn)
-  g
+![Signup Page](screenshots/lab36/signup_page.png)
+  
 - *Login page*
   
 ![Login Page](screenshots/lab36/login_page.png)
