@@ -42,6 +42,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textMain_logInUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/textMain_teamName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <!--Button
         android:id="@+id/button_firstTask"
         android:layout_width="225dp"
@@ -82,7 +94,7 @@
         android:id="@+id/buttonMain_addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:background="@color/purple_500"
         android:text="@string/add_task_button"
         app:layout_constraintEnd_toStartOf="@+id/buttonMain_allTask"
@@ -94,7 +106,7 @@
         android:id="@+id/buttonMain_allTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:background="@color/purple_500"
         android:text="@string/all_tasks_button"
         app:layout_constraintEnd_toEndOf="parent"

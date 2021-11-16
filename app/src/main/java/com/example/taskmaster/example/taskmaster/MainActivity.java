@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amplifyframework.AmplifyException;
-import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
@@ -40,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.annotations.NonNull;
 
 
 
@@ -76,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
         String myUser = preferences.getString("loggedInUser", "");
         loggedInUser.setText(myUser);
 
+        if (isNetworkAvailable(getApplicationContext())) {
+            queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
+
         //tasks = queryDataStore();
     }
 
@@ -107,6 +115,18 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
         
+        handler = new Handler(Looper.getMainLooper(),
+                msg -> {
+                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
+                    return false;
+                });
+        if (isNetworkAvailable(getApplicationContext())) {
+            tasks = queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+            
         //tasks = queryDataStore();
  
         }

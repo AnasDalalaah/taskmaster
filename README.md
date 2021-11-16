@@ -1,38 +1,28 @@
 # taskmaster
 
-# Lab: 36 - Cognito
-- Is to allow users to sign up and log in using Cognito.
+# Lab: 37 - S3
+- Is to allow users to upload files related to tasks, like screenshots or log files.
 
 ## Feature Tasks
 
-### User Login
-- Add Cognito to Amplify setup.
-- Add in user login and sign up flows to taskmaster application, using Cognito’s pre-built UI as appropriate. 
-- Display the logged in user’s username in MainActivity page.
+### Uploads
+- On the **Add a Task** activity, allow users to optionally select a file to attach to that task.
+- If a user attaches a file to a task, that file should be uploaded to **S3**, and associated with that task.
 
-### User Logout
-- Allow users to log out of your application.
-
+### Displaying Files
+- On the Task **detail activity**.
+- If there is a file that is an image associated with a particular Task, that image should be displayed within that activity.
 
 ## Screen Shots
 
-- *Signup page*
-  
-![Signup Page](screenshots/lab36/signup_page.png)
-  
-- *Login page*
-  
-![Login Page](screenshots/lab36/login_page.png)
+- *Before Adding a task*  
+![Before Adding a task](screenshots/lab37/before_add_a_task.png) 
 
-  
-- *Verification page*
-  
-![Verification page](screenshots/lab36/verification_page.png)
+- *After Adding a task*  
+![After Adding a task](screenshots/lab37/after_add_a_task.PNG) 
 
-
-- *Displayed username*
-  
-![Displayed username](screenshots/lab36/displayed_username.png)
+- *Detail Page*  
+![Detail Page](screenshots/lab37/detail_page.PNG) 
 
 
 ## Previous labs documentation
@@ -47,6 +37,8 @@
 |Lab: 32|[Amplify and DynamoDB](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
 |Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
+|Lab: 36|[Cognito](labs/LAB36.md)|
+
 
 
 

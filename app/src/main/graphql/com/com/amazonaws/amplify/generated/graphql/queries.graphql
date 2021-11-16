@@ -1,5 +1,4 @@
 # this is an auto generated file. This will be overwritten
-
 query GetTeam($id: ID!) {
   getTeam(id: $id) {
     id
@@ -30,9 +29,10 @@ query ListTeams(
       name
       tasks {
         nextToken
-        createdAt
-        updatedAt
       }
+      createdAt
+      updatedAt
+    }
     nextToken
   }
 }
@@ -47,12 +47,24 @@ query GetTask($id: ID!) {
       name
       tasks {
         nextToken
-        
       }
-    
       createdAt
       updatedAt
-    } 
+    }
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -71,6 +83,63 @@ query ListTasks(
       team {
         id
         name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+query GetNewFile($id: ID!) {
+  getNewFile(id: $id) {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+query ListNewFiles(
+  $filter: ModelNewFileFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listNewFiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
         createdAt
         updatedAt
       }
