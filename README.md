@@ -1,28 +1,33 @@
 # taskmaster
 
-# Lab: 37 - S3
-- Is to allow users to upload files related to tasks, like screenshots or log files.
+
+# Lab: 38 - Notifications
+
+- Is to add the ability for push notifications to be delivered to the app from the cloud.
 
 ## Feature Tasks
 
-### Uploads
-- On the **Add a Task** activity, allow users to optionally select a file to attach to that task.
-- If a user attaches a file to a task, that file should be uploaded to **S3**, and associated with that task.
+### Notifications on Task Creation
 
-### Displaying Files
-- On the Task **detail activity**.
-- If there is a file that is an image associated with a particular Task, that image should be displayed within that activity.
+- When a new task is created within a team, alert all users who are a part of that team about that new task.
+
+- There are several steps involved in allowing this to work:
+    - Store which team a user is part of in the cloud
+    - Add a Lambda trigger on task creation
+    - Use SNS to send a notification as part of that Lambda
+
 
 ## Screen Shots
 
-- *Before Adding a task*  
-![Before Adding a task](screenshots/lab37/before_add_a_task.png) 
+- *Adding AWS push messege*  
+![Adding AWS push messege](/screenshots/lab38/aws.png) 
 
-- *After Adding a task*  
-![After Adding a task](screenshots/lab37/after_add_a_task.PNG) 
+- *Adding Firebase notification*  
+![Adding Firebase notification](/screenshots/lab38/firebase.png) 
 
-- *Detail Page*  
-![Detail Page](screenshots/lab37/detail_page.PNG) 
+- *logcat*  
+![logcat](/screenshots/lab38/logcat.png)
+
 
 
 ## Previous labs documentation
@@ -38,6 +43,7 @@
 |Lab: 33|[Related Data](labs/LAB33.md)|
 |Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
 |Lab: 36|[Cognito](labs/LAB36.md)|
+|Lab: 37|[S3](labs/LAB37.md)|
 
 
 

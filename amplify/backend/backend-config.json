@@ -9,7 +9,7 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 35,
+              "apiKeyExpirationDays": 20,
               "description": "taskmasterAPI"
             }
           }
@@ -46,5 +46,14 @@
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }
-  }
+  },
+  "notifications": {
+    "taskmasterJFdQ0": {
+        "service": "Pinpoint",
+        "channels": [
+            "FCM"
+        ]
+    }
 }
+
+} 

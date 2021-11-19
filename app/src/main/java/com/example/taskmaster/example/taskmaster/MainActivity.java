@@ -19,10 +19,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.datastore.generated.model.State;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +42,11 @@ import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_NAME = "task_name";
     public static final String TASK_BODY = "task_body";
     public static final String TASK_STATE = "task_state";
-
     private static final String TAG = "MainActivity";
 
     private List<Task> tasks;
@@ -57,6 +67,45 @@ public class MainActivity extends AppCompatActivity {
     private List<Team> teams;
     private String selectedTeam;
     private SharedPreferences preferences;
+    private static PinpointManager pinpointManager;
+
+
+// registers the app with firebase and pinpoint
+    public static PinpointManager getPinpointManager(final Context applicationContext) {
+        if (pinpointManager == null) {
+            final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
+            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
+                @Override
+                public void onResult(UserStateDetails userStateDetails) {
+                    Log.i(TAG, userStateDetails.getUserState().toString());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e(TAG, "Initialization error.", e);
+                }
+            });
+
+            PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                    applicationContext,
+                    AWSMobileClient.getInstance(),
+                    awsConfig);
+
+            pinpointManager = new PinpointManager(pinpointConfig);
+
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        String token = task.getResult();
+                        Log.d(TAG, "Registering push notifications token: " + token);
+                        pinpointManager.getNotificationClient().registerDeviceToken(token);
+                    });
+        }
+        return pinpointManager;
+    }
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
@@ -196,6 +245,11 @@ public class MainActivity extends AppCompatActivity {
        
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+
+
+        getPinpointManager(getApplicationContext());
+
+        
 
     }
 
