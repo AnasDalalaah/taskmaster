@@ -1,5 +1,8 @@
 plugins {
     id 'com.android.application'
+
+    //lab38
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -78,6 +81,37 @@ dependencies {
 
     //lab36
     implementation 'com.amplifyframework:aws-auth-cognito:1.24.0'
+
+    
+    //lab37
+    implementation 'com.amplifyframework:aws-storage-s3:1.24.0'
+    implementation 'com.amplifyframework:aws-auth-cognito:1.24.0'
+
+    /**/
+
+    implementation 'com.amplifyframework:core:1.24.0'
+
+    // retrofit dependencies
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    //lab38
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+
+
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'
+    //
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+
+    // Overrides an auth dependency to ensure correct behavior
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.25.0'
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.26.0@aar') { transitive = true }
+
+
 
 
 }
