@@ -41,7 +41,7 @@ public class PushListenerService extends FirebaseMessagingService {
         Log.i(TAG, "Message: " + remoteMessage.getData().toString());
 
         // this code works from google notification docs
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+       NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Test Notification")
                 .setContentText(remoteMessage.getData().toString())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
