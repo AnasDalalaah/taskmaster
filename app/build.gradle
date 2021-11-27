@@ -118,7 +118,7 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-analytics'
 
-    //lab39
+   //lab39
     // Add these lines in `dependencies`
     implementation 'com.amplifyframework:aws-analytics-pinpoint:1.24.0'
 
