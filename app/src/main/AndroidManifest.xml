@@ -7,9 +7,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+     <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,7 @@
             android:name=".services.PushListenerService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+               <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <activity
@@ -45,8 +47,17 @@
         <activity android:name=".TaskDetail" />
         <activity android:name=".Settings" /> 
         <activity android:name=".AllTasks" />
-        <activity android:name=".AddATask" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".AddATask">
+        <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <data android:mimeType="text/plain" />-->
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity" />
+
     </application>
 
 </manifest>
