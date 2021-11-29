@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,6 +41,10 @@ public class TaskDetail extends AppCompatActivity {
     private Handler handler;
     private static final String TAG = "TaskDetail";
     private static final int REQUEST_FOR_FILE = 999;
+    private GoogleMap googleMap;
+
+    private double lat;
+    private double lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
