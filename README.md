@@ -1,23 +1,13 @@
 # taskmaster
 
-# Lab: 42 - Location
+# Lab: 43 - Analytics with Pinpoint
+Adding analytics to TaskMaster application that allow tracking user sessions within the application.
 
-- Is to add the user’s location to a task automatically when that task is created.
 
-## Feature Tasks
-
-### Location
-
-- When the user adds a task, their location should be retrieved and included as part of the saved Task.
-
-### Displaying Location
-
-- On the Task Detail activity, the location of a Task should be displayed if it exists.
 
 ## Screen Shots
 
-![lab42-SS2](/screenshots/lab42/lab42-SS2.PNG)
-
+![lab43-SS1](/screenshots/lab43/lab43-SS1.png)
 
 
 ## Previous labs documentation
@@ -37,6 +27,7 @@
 |Lab: 38|[Notifications](labs/LAB38.md)|
 |Lab: 39|[Review](labs/LAB39.md)|
 |Lab:41|[Intent Filters](labs/LAB41.md)|
+|Lab:42|[Location](labs/LAB42.md)|
 
 
 
