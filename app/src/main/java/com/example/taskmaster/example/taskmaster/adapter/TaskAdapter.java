@@ -50,6 +50,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         holder.taskTitle.setText(oneTask.getTitle());
         holder.taskBody.setText(oneTask.getBody());
+        intent.putExtra("lat", task.getLat());
+        intent.putExtra("lon", task.getLon());
+        view.getContext().startActivity(intent);
 //        holder.taskState.setText(oneTask.getState());
 
         Log.i(TAG, "onBindViewHolder: Called for position" + position);

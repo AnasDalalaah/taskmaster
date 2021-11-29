@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "198154753208",
-    "project_id": "taskmaster-bab45",
-    "storage_bucket": "taskmaster-bab45.appspot.com"
+    "project_number": "116622957039",
+    "project_id": "taskmasterlocation",
+    "storage_bucket": "taskmasterlocation.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:198154753208:android:b318c30f17c8afbcc2104d",
+        "mobilesdk_app_id": "1:116622957039:android:fd2b79977d56a748bbfe1a",
         "android_client_info": {
-          "package_name": "com.noorhajbi.taskmaster"
+          "package_name": "com.example.taskmaster"
         }
       },
       "oauth_client": [
         {
-          "client_id": "198154753208-4mrul82aelpdslsfl9biaa8umf98i4gd.apps.googleusercontent.com",
+          "client_id": "116622957039-jq9c57rqtdr1tho7p1ckjggi7norm2is.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCC8jQUqsT0NWuurdD2IgOb8i1K4qTilIA"
+          "current_key": "AIzaSyAGnxftnjehhGwSMtw-oDAEV0ZJ9xpdtAk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "198154753208-4mrul82aelpdslsfl9biaa8umf98i4gd.apps.googleusercontent.com",
+              "client_id": "116622957039-jq9c57rqtdr1tho7p1ckjggi7norm2is.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

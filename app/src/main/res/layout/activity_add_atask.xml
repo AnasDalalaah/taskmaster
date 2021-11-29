@@ -147,34 +147,33 @@ tools:context=".AddATask">
         app:layout_constraintTop_toBottomOf="@+id/button_addTask"
         app:layout_constraintVertical_bias="0.0" />
     
+    <ImageView
+        android:id="@+id/shareImageTextViewId"
+        android:layout_width="63dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="104dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toEndOf="@+id/uploadFileId"
+        app:layout_constraintTop_toBottomOf="@+id/team_spinner"
+        app:layout_constraintVertical_bias="0.07"
+        app:srcCompat="@drawable/empty_image" />
+
+
      <ImageView
-        android:id="@+id/imageView_showFromS3"
-        android:layout_width="130dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="100dp"
-        android:visibility="invisible"
+        android:id="@+id/shareImageTextViewId"
+        android:layout_width="63dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="104dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.768"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.411"
-        app:srcCompat="@android:drawable/picture_frame" />
-
-
-    <Button
-        android:id="@+id/button_addImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/purple_500"
-        android:text="Add Image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.755"
-        app:layout_constraintStart_toEndOf="@+id/button_addTask"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/uploadFileId"
+        app:layout_constraintTop_toBottomOf="@+id/team_spinner"
+        app:layout_constraintVertical_bias="0.37"
+        app:srcCompat="@drawable/empty_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

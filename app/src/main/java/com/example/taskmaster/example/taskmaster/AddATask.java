@@ -7,9 +7,16 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-//import androidx.room.Room;
+import androidx.core.app.ActivityCompat;
 
+//import androidx.room.Room;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.content.Intent;
+import android.os.Looper;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -36,6 +43,12 @@ import com.amplifyframework.datastore.generated.model.NewFile;
 import com.amplifyframework.datastore.generated.model.State;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,6 +58,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import android.provider.Settings;
+
 
 public class AddATask extends AppCompatActivity {
     //    AppDatabase database;
@@ -54,6 +69,25 @@ public class AddATask extends AppCompatActivity {
     private int selectedState;
     List<Team> teams;
     RadioButton team1, team2, team3;
+
+     // lab 42
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private final LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            Log.i(TAG, "The location is => " + mLastLocation);
+        }
+    };
+
+    private double lat;
+    private double lon;
+
+    private static final int REQUEST_PERMISSION = 123;
+    private static final int REQUEST_OPEN_GALLERY = 1111;
+    private static final int PERMISSION_ID = 44;
+
     String fileKey;
     public static final int REQUEST_FOR_FILE = 999;
     
@@ -77,7 +111,14 @@ public class AddATask extends AppCompatActivity {
                         queryDataStore();
             Log.i(TAG, "NET: net down");
         }
-          
+          //lab 42
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        Button getLocationBut= findViewById(R.id.getLocationId);
+        getLocationBut.setOnClickListener(view -> {
+            getLastLocation();
+        });
+
           //**************Lab41**************//
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -186,7 +227,83 @@ public class AddATask extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("Task", "Could not initialize Amplify", e);
             }
+// lab 42
+    @SuppressLint("MissingPermission")
+    private void getLastLocation(){
+        if (checkPermissions()) {
 
+            if (isLocationEnabled()) {
+
+                fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+
+                    Location location = task.getResult();
+
+                    if (location == null) {
+                        requestNewLocationData();
+                    } else {
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Please turn on your location...", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
+            }
+        }
+    }
+
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        // If we want background location
+        // on Android 10.0 and higher,
+        // use:
+        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5);
+        locationRequest.setFastestInterval(0);
+        locationRequest.setNumUpdates(10);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this); // this may or may not be needed
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getFileFromDevice();
+            } else {
+                Log.i(TAG, "Error : Permission Field");
+            }
+        }
+    }
             
 
             Intent goToMainActivity = new Intent(AddATask.this, MainActivity.class);

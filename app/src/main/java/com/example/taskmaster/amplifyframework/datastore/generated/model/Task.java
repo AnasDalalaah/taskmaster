@@ -27,7 +27,11 @@ public final class Task implements Model {
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField STATE = field("Task", "State");
   public static final QueryField TEAM = field("Task", "taskTeamId");
+  public static final QueryField LAT = field("Task", "lat");
+  public static final QueryField LON = field("Task", "lon");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="Float") Double lat;
+  private final @ModelField(targetType="Float") Double lon;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="State") State State;
@@ -39,6 +43,14 @@ public final class Task implements Model {
       return id;
   }
   
+  public Double getLat() {
+      return lat;
+  }
+
+  public Double getLon() {
+      return lon;
+  }
+
   public String getTitle() {
       return title;
   }
@@ -46,6 +58,7 @@ public final class Task implements Model {
   public String getBody() {
       return body;
   }
+  
   
   public State getState() {
       return State;
@@ -67,12 +80,14 @@ public final class Task implements Model {
       return updatedAt;
   }
   
-  private Task(String id, String title, String body, State State, Team team ) {
+  private Task(String id, String title, String body, String state, String fileName, String team, Double lat, Double lon) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.State = State;
     this.team = team;
+     this.lat = lat;
+    this.lon = lon;
   }
   
   @Override
@@ -86,6 +101,8 @@ public final class Task implements Model {
       return ObjectsCompat.equals(getId(), task.getId()) &&
               ObjectsCompat.equals(getTitle(), task.getTitle()) &&
               ObjectsCompat.equals(getBody(), task.getBody()) &&
+              ObjectsCompat.equals(getLat(), task.getLat()) &&
+              ObjectsCompat.equals(getLon(), task.getLon()) &&
               ObjectsCompat.equals(getState(), task.getState()) &&
               ObjectsCompat.equals(getTeam(), task.getTeam()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
@@ -101,6 +118,8 @@ public final class Task implements Model {
       .append(getBody())
       .append(getState())
       .append(getTeam())
+      .append(getLat())
+      .append(getLon())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -116,6 +135,8 @@ public final class Task implements Model {
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("State=" + String.valueOf(getState()) + ", ")
       .append("team=" + String.valueOf(getTeam()) + ", ")
+      .append("lat=" + String.valueOf(getLat()) + ", ")
+      .append("lon=" + String.valueOf(getLon()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -150,6 +171,8 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
@@ -159,7 +182,9 @@ public final class Task implements Model {
       title,
       body,
       State;
-      team);
+      team,
+      lat,
+      lon);
 
   }
   public interface TitleStep {
@@ -173,6 +198,8 @@ public final class Task implements Model {
     BuildStep body(String body);
     BuildStep state(State state);
     BuildStep team(Team team);
+    BuildStep lat(Double lat);
+    BuildStep lon(Double lon);
 
   }
   
@@ -183,6 +210,8 @@ public final class Task implements Model {
     private String body;
     private State State;
     private Team team;
+    private Double lat;
+    private Double lon;
 
     @Override
      public Task build() {
@@ -192,8 +221,10 @@ public final class Task implements Model {
           id,
           title,
           body,
-          State;
-          team);
+          State,
+          team,
+          lat,
+          lon);
 
     }
     
@@ -215,6 +246,18 @@ public final class Task implements Model {
         this.State = state;
         return this;
     }
+
+    @Override
+     public BuildStep lat(Double lat) {
+        this.lat = lat;
+        return this;
+    }
+
+    @Override
+     public BuildStep lon(Double lon) {
+        this.lon = lon;
+        return this;
+    }
     
     /** 
      * @param id id
@@ -228,11 +271,14 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, State state, Team team) {
+       private CopyOfBuilder(String id, String title, String body, String state, String fileName, String team, Double lat, Double lon) {
+ {
       super.id(id);
       super.title(title)
         .state(state)
-        .team(team);
+        .team(team)
+        .lat(lat)
+        .lon(lon);
     }
     
     @Override
@@ -253,6 +299,16 @@ public final class Task implements Model {
      public CopyOfBuilder team(Team team) {
       return (CopyOfBuilder) super.team(team);
     }
+     @Override
+     public CopyOfBuilder lat(Double lat) {
+      return (CopyOfBuilder) super.lat(lat);
+    }
+
+    @Override
+     public CopyOfBuilder lon(Double lon) {
+      return (CopyOfBuilder) super.lon(lon);
+    }
   }
+
   
 }
